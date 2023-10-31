@@ -6,8 +6,8 @@ use starknet::ContractAddress;
 trait IGasEstimateApi<TContractState> {
     fn get_minimum_gas_price(self: @TContractState) -> u128;
     fn compute_gas_price(ref self: TContractState, gas_used: u128) -> u128;
-    fn get_gas_cost(ref self: TContractState, contract_address: ContractAddress);
-    fn estimated_gas_fee_for_deployment(ref self: TContractState);
+    // fn get_gas_cost(ref self: TContractState, contract_address: ContractAddress);
+    // fn estimated_gas_fee_for_deployment(ref self: TContractState);
 }
 
 #[starknet::contract]
@@ -42,16 +42,16 @@ mod GasEstimateApi {
 
         // GET GAS COST OF AN ALREADY DEPLOYED STARKNET SMART CONTRACT BY IMPUTTING THE SMART CONTRACT ADDRESS
         
-        fn get_gas_cost(ref self: ContractState, contract_address: ContractAddress) {
-            // Let gas_limit: u128 = COMPUTE THE TOTAL GAS SPENT ON DEPLOYING THE CONTRACT;
-            //gas_limit
-        }
+        // fn get_gas_cost(ref self: ContractState, contract_address: ContractAddress) {
+        //     Let gas_limit: u128 = COMPUTE THE TOTAL GAS SPENT ON DEPLOYING THE CONTRACT;
+        //     gas_limit
+        // }
 
         // CALCULATE THE GAS COST FOR DEPLOYMENT OF THE EXISTING CONTRACT BEFORE DEPLOYING
 
-        fn estimated_gas_fee_for_deployment(ref self: ContractState) {
-            //Task: use the runtime bytecode to compute the total gas estimate for the current contract
-        }
+        // fn estimated_gas_fee_for_deployment(ref self: ContractState) {
+        //     Task: use the runtime bytecode to compute the total gas estimate for the current contract
+        // }
     }
 }
 

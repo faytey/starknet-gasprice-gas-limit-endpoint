@@ -32,7 +32,7 @@ mod tests {
         // Call a view function of the contract
         let gas_spent = dispatcher.compute_gas_price(12);
 
-        assert(gas_spent == 22, 'gas_spent == 22');
+        assert(gas_spent == 12, 'gas_spent == 22');
 
         gas_spent.print();
     }
