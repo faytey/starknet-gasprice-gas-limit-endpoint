@@ -1,46 +1,53 @@
 use axum::http::{Request, Response, StatusCode};
 use axum::response::IntoResponse;
-use axum::{Json, Router, routing::post};
+use axum::{routing::post, Json, Router};
+use reqwest::{
+    header::{HeaderMap, HeaderValue},
+    Client,
+};
 use serde::Deserialize;
-use reqwest::{Client, header::{HeaderMap, HeaderValue}};
 // use tower::ServiceExt;
 use std::convert::Infallible;
 use std::sync::Arc;
 
-fn concat_url(base_url: &str, end_point: &str) -> String {
-    format!("{}?end_point={}", base_url, end_point)
+// util function to concat base URL and contract address payload
+fn concat_url(base_url: &str, to: &str) -> String {
+    format!("{}?to={}", base_url, to)
 }
 
 #[derive(Deserialize)]
 struct Params {
-    class_hash: String,
+    contract_address: String,
     x_api_key: String,
 }
 
-async fn call_voyager(payload: Json<Params>) -> Result<impl IntoResponse, Infallible> {
+
+
+
+async fn get_actual_fee(payload: Json<Params>) -> Result<impl IntoResponse, Infallible> {
     let client: Client = Client::new();
-    let base_url = "https://api.voyager.online/beta/classes/";
+    let base_url = "https://api.voyager.online/beta/txns";
 
     // cccess the inner Params struct from Json wrapper
     let params_payload: Params = payload.0;
-
-    println!("class_hash_len___ {}", &params_payload.class_hash.len());
-
-    if params_payload.class_hash.len() != 66 {
-        // validate class_hash length
-        // return error message if class_hash length is !== 66
+    if params_payload.contract_address.len() != 66 {
+        // validate contract address length
+        // return error message if contract_addr length is !== 66
         let response = Response::builder()
-        .status(StatusCode::BAD_REQUEST)
-        .body("class hash length must be 66 char long".to_string())
-        .unwrap();
+            .status(StatusCode::BAD_REQUEST)
+            .body("Contract address must be 66 characters long".to_string())
+            .unwrap();
         return Ok(response);
     }
 
-    let voyager_url = concat_url(&base_url, &params_payload.class_hash);
+    let voyager_url = concat_url(&base_url, &params_payload.contract_address);
 
     // Create a header map and add custom request headers
     let mut request_headers = HeaderMap::new();
-    request_headers.insert("x-api-key", HeaderValue::from_str(&params_payload.x_api_key).unwrap());
+    request_headers.insert(
+        "x-api-key",
+        HeaderValue::from_str(&params_payload.x_api_key).unwrap(),
+    );
 
     let response = client
         .get(voyager_url)
@@ -53,12 +60,9 @@ async fn call_voyager(payload: Json<Params>) -> Result<impl IntoResponse, Infall
     let status = response.status();
     let body = response.text().await.unwrap();
 
-    Ok(Response::builder()
-        .status(status)
-        .body(body)
-        .unwrap())
+    Ok(Response::builder().status(status).body(body).unwrap())
 }
 
 pub fn routes() -> Router {
-    Router::new().route("/api/voyager", post(call_voyager))
+    Router::new().route("/api/get-actual-fee", post(get_actual_fee))
 }
