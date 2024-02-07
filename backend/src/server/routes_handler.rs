@@ -6,9 +6,8 @@ use reqwest::{
     Client,
 };
 use serde::{Deserialize, Serialize};
-use std::{convert::Infallible, collections::HashMap};
+use std::{collections::HashMap, convert::Infallible};
 
-// util function to concat base URL and contract address payload
 fn concat_url(base_url: &str, to: &str) -> String {
     format!("{}?to={}", base_url, to)
 }
@@ -19,18 +18,19 @@ struct Params {
     x_api_key: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)] // Derive Serialize trait
 struct VoyagerAPIResponse {
     items: Vec<Item>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)] // Derive Serialize trait
 struct Item {
-    actualFee: String,
     hash: String,
+    actualFee: String,
+    timestamp: u64,
 }
 
-// Serialize the HashMap so that it can be returned as JSON
+// serialize the HashMap so that it can be returned as JSON
 #[derive(Serialize)]
 struct HashToFeeResponse {
     hash_to_fee: HashMap<String, String>,
@@ -52,7 +52,6 @@ async fn get_actual_fee(payload: Json<Params>) -> Result<impl IntoResponse, Infa
         return Ok(response);
     }
 
-
     let voyager_url = concat_url(&base_url, &params_payload.contract_address);
 
     // create a header map and add custom request headers
@@ -73,35 +72,43 @@ async fn get_actual_fee(payload: Json<Params>) -> Result<impl IntoResponse, Infa
     let status = response.status();
     let body = response.text().await.unwrap();
 
-    // deserialize the response
-    let response: VoyagerAPIResponse = serde_json::from_str(&body).unwrap();
+    println!("direct API___response___: {:?}", body);
 
-    // check if the voyager response contains any items
-    if response.items.is_empty() {
-        let response = axum::http::Response::builder()
-            .status(StatusCode::NOT_FOUND)
-            .body("unsuccessful response from Voyager API".to_string())
-            .unwrap();
-        return Ok(response);
+    // parse the JSON response
+    let api_response: Result<VoyagerAPIResponse, _> = serde_json::from_str(&body);
+
+    // Check if parsing was successful
+    match api_response {
+        Ok(api_response) => {
+            // find the item with the minimum timestamp
+            let oldest_item = api_response.items.iter().min_by_key(|item| item.timestamp);
+
+            match oldest_item {
+                Some(oldest_item) => {
+                    // json stringify convert the oldest item and return it
+                    Ok(Response::builder()
+                        .status(status)
+                        .body(serde_json::to_string(&oldest_item).unwrap())
+                        .unwrap())
+                }
+                None => {
+                    // handle no items in voyager API response
+                    let response = Response::builder()
+                        .status(StatusCode::INTERNAL_SERVER_ERROR)
+                        .body("No items found".to_string())
+                        .unwrap();
+                    Ok(response)
+                }
+            }
+        }
+        Err(err) => {
+            let response = Response::builder()
+                .status(StatusCode::INTERNAL_SERVER_ERROR)
+                .body(format!("Failed to parse voyager API response: {}", err))
+                .unwrap();
+            Ok(response)
+        }
     }
-
-    // map hash with actual fee
-    let mut hash_to_fee: HashMap<String, String> = HashMap::new();
-    // populate the HashMap with the mapping from hash to actualFee
-    for item in &response.items {
-        let hash = &item.hash;
-        let actual_fee = &item.actualFee;
-        hash_to_fee.insert(hash.clone(), actual_fee.clone());
-    }
-
-   // serialize the HashMap as JSON
-   let hash_to_fee_response = HashToFeeResponse { hash_to_fee };
-   let json_response = serde_json::to_string(&hash_to_fee_response).unwrap();
-
-   Ok(Response::builder()
-       .status(status)
-       .body(json_response)
-       .unwrap())
 }
 
 pub fn routes() -> Router {
