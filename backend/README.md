@@ -1,6 +1,6 @@
 #### To run locally:
 
-- `baseUrl` - 127.0.0.1:5000/
+- `baseUrl` - https://voyager-api-deploy.fly.dev/
 - `endpoint` - api/get-actual-fee
 
 - `payload`: 
