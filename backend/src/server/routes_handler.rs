@@ -1,3 +1,4 @@
+use crate::utils;
 use axum::http::{Request, Response, StatusCode};
 use axum::response::IntoResponse;
 use axum::{routing::post, Json, Router};
@@ -7,7 +8,6 @@ use reqwest::{
 };
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, convert::Infallible};
-use crate::utils;
 
 #[derive(Deserialize)]
 struct Params {
@@ -113,8 +113,7 @@ pub fn routes() -> Router {
     let cors = utils::cors_handler();
 
     // integrate CORS to router
-    Router::new().route("/api/get-actual-fee", post(get_actual_fee))
-    .layer(cors) 
+    Router::new()
+        .route("/api/get-actual-fee", post(get_actual_fee))
+        .layer(cors)
 }
-
-

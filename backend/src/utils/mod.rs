@@ -8,7 +8,7 @@ pub fn concat_url(base_url: &str, to: &str) -> String {
 // CORS util fn
 pub fn cors_handler() -> CorsLayer {
     CorsLayer::new()
-    .allow_origin(Any) 
-    .allow_methods(Any) 
-    .allow_headers(Any)
+        .allow_origin(Any)
+        .allow_methods(Any)
+        .allow_headers(Any)
 }
