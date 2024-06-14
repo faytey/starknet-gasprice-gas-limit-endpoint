@@ -5,7 +5,7 @@ import ActualFeesProvider from "@/context/ActualFeesContext";
 export default function Home() {
   return (
     <ActualFeesProvider>
-      <main className="xl:flex xl:min-h-screen flex-col items-center justify-between xl:p-10 pb-10 dark:bg-[#060304] bg-[#FEFAFA]">
+      <main className="xl:flex xl:min-h-screen flex-col items-center justify-center  dark:bg-[#060304] bg-[#FEFAFA]">
         <HomePage />
       </main>
     </ActualFeesProvider>
