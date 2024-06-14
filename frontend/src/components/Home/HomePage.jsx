@@ -67,11 +67,10 @@ function HomePage() {
             efficiently.
           </p>
         </header>
-        <figure className="relative md:w-[400px] h-[270.68px] z-50">
+        <figure className="relative z-40">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="400"
-            height="271"
+            className=" md:w-[400px] h-[270.68]"
             viewBox="0 0 400 271"
             fill="none"
           >
@@ -184,7 +183,12 @@ function HomePage() {
             </g>
             <defs>
               <clipPath id="clip0_2003_106">
-                <rect width="400" height="271" fill="white" />
+                <rect
+                  width="400"
+                  height="271"
+                  fill="white"
+                  className=" md:w-[400px] h-[270.68]"
+                />
               </clipPath>
             </defs>
           </svg>
