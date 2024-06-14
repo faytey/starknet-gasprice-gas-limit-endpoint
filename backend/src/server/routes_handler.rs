@@ -1,3 +1,4 @@
+use crate::utils;
 use axum::http::{Request, Response, StatusCode};
 use axum::response::IntoResponse;
 use axum::{routing::post, Json, Router};
@@ -7,10 +8,6 @@ use reqwest::{
 };
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, convert::Infallible};
-
-fn concat_url(base_url: &str, to: &str) -> String {
-    format!("{}?to={}", base_url, to)
-}
 
 #[derive(Deserialize)]
 struct Params {
@@ -31,7 +28,7 @@ struct Item {
 }
 
 // serialize the HashMap so that it can be returned as JSON
-#[derive(Serialize)]
+#[derive(Debug, Serialize)]
 struct HashToFeeResponse {
     hash_to_fee: HashMap<String, String>,
 }
@@ -52,7 +49,7 @@ async fn get_actual_fee(payload: Json<Params>) -> Result<impl IntoResponse, Infa
         return Ok(response);
     }
 
-    let voyager_url = concat_url(&base_url, &params_payload.contract_address);
+    let voyager_url = utils::concat_url(&base_url, &params_payload.contract_address);
 
     // create a header map and add custom request headers
     let mut request_headers = HeaderMap::new();
@@ -77,7 +74,7 @@ async fn get_actual_fee(payload: Json<Params>) -> Result<impl IntoResponse, Infa
     // parse the JSON response
     let api_response: Result<VoyagerAPIResponse, _> = serde_json::from_str(&body);
 
-    // Check if parsing was successful
+    // check if parsing is successful
     match api_response {
         Ok(api_response) => {
             // find the item with the minimum timestamp
@@ -112,5 +109,11 @@ async fn get_actual_fee(payload: Json<Params>) -> Result<impl IntoResponse, Infa
 }
 
 pub fn routes() -> Router {
-    Router::new().route("/api/get-actual-fee", post(get_actual_fee))
+    // add CORS layer to allow any origin
+    let cors = utils::cors_handler();
+
+    // integrate CORS to router
+    Router::new()
+        .route("/api/get-actual-fee", post(get_actual_fee))
+        .layer(cors)
 }

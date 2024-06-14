@@ -1,6 +1,6 @@
 #### To run locally:
 
-- `baseUrl` - https://voyager-api-deploy.fly.dev/
+- `baseUrl` - https://voyager-api-deploy-withered-shadow-7289.fly.dev/
 - `endpoint` - api/get-actual-fee
 
 - `payload`: 

@@ -1,5 +1,6 @@
 #![allow(unused)]
 use std::{fmt::format, net::SocketAddr};
+pub mod utils;
 
 use axum::{
     middleware,
