@@ -2,7 +2,6 @@
 import Image from "next/image";
 import React, { useContext, useRef, useState } from "react";
 import background from "@/../public/assets/Group.png";
-import checklist from "@/../public/assets/Frame.svg";
 import CheckingModal from "../CheckingModal";
 import Checking from "../Checking";
 import { ActualFeesContext } from "@/context/ActualFeesContext";
