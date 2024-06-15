@@ -200,7 +200,7 @@ function HomePage() {
           onSubmit={handleSubmit}
           className="md:flex grid grid-cols-1 gap-4 self-center items-center p-4"
         >
-          <label className="xl:w-[956px] md:flex gap-4 items-center md:h-[54px]">
+          <label className="xl:w-[956px] md:flex  grid grid-cols-1 gap-4 items-center md:h-[54px]">
             <p className="text-[#112C75] dark:text-[#B0B1F3] text-center font-bold text-[16px]">
               Contract Address
             </p>
