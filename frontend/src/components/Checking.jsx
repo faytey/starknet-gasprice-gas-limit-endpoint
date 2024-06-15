@@ -28,7 +28,7 @@ function Checking() {
     : "";
 
   return (
-    <div className="w-[500px] h-[230.77px] flex flex-col dark:text-[#0C0D4F] gap-4 justify-center items-center">
+    <div className="md:w-[500px] w-[256px] md:h-[230.77px] h-[150px]  flex flex-col dark:text-[#0C0D4F] gap-4 justify-center items-center">
       {!success && !error ? (
         <>
           <Image

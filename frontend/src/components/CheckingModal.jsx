@@ -29,7 +29,7 @@ const CheckingModal = ({ isOpen, onClose, children }) => {
     >
       <div
         onClick={handleClick}
-        className="absolute bg-white p-8 rounded-lg shadow-xl z-[999] max-w-screen-xl"
+        className="absolute bg-white md:p-8 p-12 rounded-lg shadow-xl z-[999] max-w-screen-xl"
         role="dialog"
         aria-modal="true"
       >
