@@ -12,7 +12,7 @@ function Checking({ onClose }) {
     useContext(ActualFeesContext);
 
   const { hash, actualFee } = ActualFees;
-  console.log(hash);
+  
   const [usdRate, setUsdRate] = useState(null);
 
   const shortHash = hash ? `${hash.slice(0, 14)}....` : "";
