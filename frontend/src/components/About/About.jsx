@@ -9,7 +9,6 @@ function About() {
         <Image
           src={background}
           alt="background"
-          layout="fill"
           className="absolute xl:w-[1192px] h-[124px] rounded-[10px]"
         />
         <header className="relative z-10">

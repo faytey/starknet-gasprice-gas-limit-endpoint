@@ -4,25 +4,19 @@ import checking from "@/../public/assets/Spinner-Filled-Circles.png";
 import eth from "@/../public/assets/cryptocurrency-color_eth.png";
 import more from "@/../public/assets/arrow-down.png";
 import errorIcon from "@/../public/assets/icons8-error-48.png";
-import subEth from "@/../public/assets/ethSub.png";
 import { ActualFeesContext } from "@/context/ActualFeesContext";
 
 function Checking({ onClose }) {
-  const {
-    ActualFees,
-    success,
-    error,
-    errorMessage,
-    open,
-    toggleOpen,
-    toggleIcon,
-    icon,
-  } = useContext(ActualFeesContext);
+  const { ActualFees, success, error, errorMessage } =
+    useContext(ActualFeesContext);
 
   const { hash, actualFee } = ActualFees;
+  console.log(hash);
 
   const shortHash = hash ? `${hash.slice(0, 14)}....` : "";
-
+  const voyagerScanUrl = hash
+    ? `https://voyager.online/tx/${hash}`
+    : "#";
   const actualFeeInEth = actualFee
     ? (parseInt(actualFee) / 10 ** 18).toFixed(5)
     : "";
@@ -66,23 +60,14 @@ function Checking({ onClose }) {
               <p className="self-start">{shortHash}</p>
               <div className="flex gap-2 items-center relative">
                 <p> ${actualFeeInEth}</p>
-                <Image src={icon ? eth : subEth} alt="ETH" />
-                <Image
-                  src={more}
-                  alt="More"
-                  className={
-                    open ? "rotate-90 cursor-pointer" : "cursor-pointer"
-                  }
-                  onClick={toggleOpen}
-                />
-                {open && (
-                  <Image
-                    src={!icon ? eth : subEth}
-                    alt="Toggle Icon"
-                    className="cursor-pointer absolute top-full -right-1"
-                    onClick={toggleIcon}
-                  />
-                )}
+                <Image src={eth} alt="ETH" />
+                <a
+                  href={voyagerScanUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Image src={more} alt="More" className=" cursor-pointer" />
+                </a>
               </div>
             </div>
           </div>

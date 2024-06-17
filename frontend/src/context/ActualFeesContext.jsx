@@ -8,6 +8,7 @@ const ActualFeesProvider = ({ children }) => {
 
   const [success, setSuccess] = useState(false);
 
+
   const [error, setError] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState("");
@@ -15,14 +16,6 @@ const ActualFeesProvider = ({ children }) => {
   const baseUrl = process.env.NEXT_PUBLIC_baseUrl;
 
   const apiKey = process.env.NEXT_PUBLIC_x_api_key;
-
-  const [open, setOpen] = useState(false);
-
-  const [icon, setIcon] = useState(true);
-
-  const toggleIcon = () => setIcon(!icon);
-
-  const toggleOpen = () => setOpen(!open);
 
   async function getActualFee(address) {
     setSuccess(false);
@@ -55,12 +48,6 @@ const ActualFeesProvider = ({ children }) => {
   return (
     <ActualFeesContext.Provider
       value={{
-        icon,
-        setIcon,
-        open,
-        toggleIcon,
-        toggleOpen,
-        setOpen,
         ActualFees,
         getActualFee,
         success,
