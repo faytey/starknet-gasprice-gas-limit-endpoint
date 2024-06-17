@@ -58,6 +58,7 @@ function HomePage() {
           priority
           alt="background"
           className="absolute md:rounded-[10px] z-0"
+          layout="fill"
         />
         <header className="relative md:w-[427px] h-[166px] z-50">
           <h1 className="font-semibold text-[38px] leading-[50px] text-[#0C0D4F] dark:text-white">
