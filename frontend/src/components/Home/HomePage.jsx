@@ -48,6 +48,7 @@ function HomePage() {
       <section className="relative xl:w-[1192px] md:h-[374px] p-10 md:rounded-[10px] md:flex justify-around items-center bg-gradient-to-r from-[#DDE5F9] to-[#FDD4D4] dark:bg-gradient-to-r dark:from-[#5E87EF] dark:to-[#F77D7D]">
         <Image
           src={background}
+          priority
           alt="background"
           className="absolute md:rounded-[10px] z-0"
         />

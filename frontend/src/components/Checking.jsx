@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import checking from "@/../public/assets/Spinner-Filled-Circles.png";
 import eth from "@/../public/assets/cryptocurrency-color_eth.png";
 import more from "@/../public/assets/arrow-down.png";
@@ -11,10 +11,31 @@ function Checking({ onClose }) {
     useContext(ActualFeesContext);
 
   const { hash, actualFee } = ActualFees;
-
+  const [usdRate, setUsdRate] = useState(null);
   const shortHash = hash ? `${hash.slice(0, 14)}....` : "";
 
   const voyagerScanUrl = hash ? `https://voyager.online/tx/${hash}` : "#";
+
+  useEffect(() => {
+    const fetchEthToUsdRate = async () => {
+      try {
+        const response = await fetch(
+          "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch ETH to USD rate");
+        }
+        const data = await response.json();
+        const rate = data.ethereum.usd;
+        setUsdRate(rate);
+      } catch (error) {
+        console.error("Error fetching ETH to USD rate:", error);
+      }
+    };
+
+    fetchEthToUsdRate();
+  }, []);
+  const feeInUsd = (parseFloat(actualFee) / 10 ** 18) * usdRate;
 
   const actualFeeInEth = actualFee
     ? (parseInt(actualFee) / 10 ** 18).toFixed(5)
@@ -58,7 +79,7 @@ function Checking({ onClose }) {
             <div className="w-[128px] h-[67px] text-[14px] leading-[25px] font-semibold flex flex-col items-end justify-between">
               <p className="self-start">{shortHash}</p>
               <div className="flex gap-2 items-center relative">
-                <p> ${actualFeeInEth}</p>
+                <p> ${feeInUsd?.toFixed(2)}</p>
                 <Image src={eth} alt="ETH" />
                 <a
                   href={voyagerScanUrl}
