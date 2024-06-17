@@ -11,12 +11,11 @@ function Checking({ onClose }) {
     useContext(ActualFeesContext);
 
   const { hash, actualFee } = ActualFees;
-  console.log(hash);
 
   const shortHash = hash ? `${hash.slice(0, 14)}....` : "";
-  const voyagerScanUrl = hash
-    ? `https://voyager.online/tx/${hash}`
-    : "#";
+
+  const voyagerScanUrl = hash ? `https://voyager.online/tx/${hash}` : "#";
+
   const actualFeeInEth = actualFee
     ? (parseInt(actualFee) / 10 ** 18).toFixed(5)
     : "";
@@ -43,7 +42,7 @@ function Checking({ onClose }) {
             width="24"
             height="24"
             viewBox="0 0 50 50"
-            className=" absolute cursor-pointer top-0 right-0"
+            className=" absolute cursor-pointer top-0 right-0 text-gray-950 hover:fill-red-800 hover:scale-110"
             onClick={onClose}
           >
             <path d="M 7.71875 6.28125 L 6.28125 7.71875 L 23.5625 25 L 6.28125 42.28125 L 7.71875 43.71875 L 25 26.4375 L 42.28125 43.71875 L 43.71875 42.28125 L 26.4375 25 L 43.71875 7.71875 L 42.28125 6.28125 L 25 23.5625 Z"></path>
@@ -53,7 +52,7 @@ function Checking({ onClose }) {
           </h3>
           <div className="flex justify-between gap-10">
             <div className="w-[128px] h-[67px] text-[14px] flex flex-col gap-4 leading-[25px] font-semibold">
-              <p>Contract Address</p>
+              <p>Transaction Hash</p>
               <p>Estimated Gas fee</p>
             </div>
             <div className="w-[128px] h-[67px] text-[14px] leading-[25px] font-semibold flex flex-col items-end justify-between">
