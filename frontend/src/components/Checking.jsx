@@ -12,7 +12,7 @@ function Checking({ onClose }) {
     useContext(ActualFeesContext);
 
   const { hash, actualFee } = ActualFees;
-
+  console.log(hash);
   const [usdRate, setUsdRate] = useState(null);
 
   const shortHash = hash ? `${hash.slice(0, 14)}....` : "";
@@ -75,7 +75,7 @@ function Checking({ onClose }) {
             <div className="w-[128px] h-[67px] text-[14px] leading-[25px] font-semibold flex flex-col items-end justify-between">
               <p className="self-start">{shortHash}</p>
               <div className="flex gap-2 items-center relative">
-                <p> ${feeInUsd?.toFixed(2)}</p>
+                <p> ${feeInUsd?.toFixed(5)}</p>
                 <Image src={eth} alt="ETH" />
                 <a
                   href={voyagerScanUrl}
