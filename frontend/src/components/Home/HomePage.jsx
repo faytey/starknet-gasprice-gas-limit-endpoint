@@ -230,7 +230,7 @@ function HomePage() {
         onClose={handleCloseModal}
         className="z-[999]"
       >
-        <Checking />
+        <Checking onClose={handleCloseModal} />
       </CheckingModal>
     </main>
   );

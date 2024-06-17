@@ -7,7 +7,7 @@ import errorIcon from "@/../public/assets/icons8-error-48.png";
 import subEth from "@/../public/assets/ethSub.png";
 import { ActualFeesContext } from "@/context/ActualFeesContext";
 
-function Checking() {
+function Checking({ onClose }) {
   const {
     ActualFees,
     success,
@@ -28,7 +28,7 @@ function Checking() {
     : "";
 
   return (
-    <div className="md:w-[500px] w-[256px] md:h-[230.77px] h-[150px]  flex flex-col dark:text-[#0C0D4F] gap-4 justify-center items-center">
+    <div className="md:w-[500px] w-[256px] md:h-[230.77px] h-[150px]  flex flex-col dark:text-[#0C0D4F] gap-4 justify-center items-center relative">
       {!success && !error ? (
         <>
           <Image
@@ -42,6 +42,18 @@ function Checking() {
         </>
       ) : success && !error ? (
         <>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            x="0px"
+            y="0px"
+            width="24"
+            height="24"
+            viewBox="0 0 50 50"
+            className=" absolute cursor-pointer top-0 right-0"
+            onClick={onClose}
+          >
+            <path d="M 7.71875 6.28125 L 6.28125 7.71875 L 23.5625 25 L 6.28125 42.28125 L 7.71875 43.71875 L 25 26.4375 L 42.28125 43.71875 L 43.71875 42.28125 L 26.4375 25 L 43.71875 7.71875 L 42.28125 6.28125 L 25 23.5625 Z"></path>
+          </svg>
           <h3 className="font-semibold text-[16px] leading-[25px] text-[#0C0D4F]">
             Result
           </h3>
@@ -77,6 +89,18 @@ function Checking() {
         </>
       ) : (
         <>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            x="0px"
+            y="0px"
+            width="24"
+            height="24"
+            viewBox="0 0 50 50"
+            className=" absolute cursor-pointer top-0 right-0"
+            onClick={onClose}
+          >
+            <path d="M 7.71875 6.28125 L 6.28125 7.71875 L 23.5625 25 L 6.28125 42.28125 L 7.71875 43.71875 L 25 26.4375 L 42.28125 43.71875 L 43.71875 42.28125 L 26.4375 25 L 43.71875 7.71875 L 42.28125 6.28125 L 25 23.5625 Z"></path>
+          </svg>
           <h3 className="font-semibold text-[16px] leading-[25px] text-[#0C0D4F] flex items-center">
             Something went wrong
             <Image src={errorIcon} alt="Error Icon" />
