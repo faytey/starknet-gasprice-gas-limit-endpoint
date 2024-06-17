@@ -8,7 +8,6 @@ const ActualFeesProvider = ({ children }) => {
 
   const [success, setSuccess] = useState(false);
 
-
   const [error, setError] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState("");
@@ -19,7 +18,9 @@ const ActualFeesProvider = ({ children }) => {
 
   async function getActualFee(address) {
     setSuccess(false);
+
     setError(false);
+
     try {
       const response = await axios.post(
         `${baseUrl}/api/get-actual-fee`,
@@ -34,13 +35,16 @@ const ActualFeesProvider = ({ children }) => {
           withCredentials: false,
         }
       );
+
       if (response.status === 200) {
         setActualFees(response.data);
         setSuccess(true);
       }
     } catch (error) {
       setErrorMessage(error?.response?.data);
+
       setSuccess(false);
+
       setError(true);
     }
   }
@@ -49,10 +53,15 @@ const ActualFeesProvider = ({ children }) => {
     <ActualFeesContext.Provider
       value={{
         ActualFees,
+
         getActualFee,
+
         success,
+
         error,
+
         setError,
+
         errorMessage,
       }}
     >

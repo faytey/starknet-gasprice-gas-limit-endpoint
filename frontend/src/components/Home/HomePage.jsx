@@ -19,19 +19,26 @@ function HomePage() {
     setIsModalOpen(true);
     document.body.style.overflow = "hidden";
   };
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
+
     setAddress("");
+
     document.body.style.overflow = "auto";
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
     if (!addressInputRef.current.checkValidity()) {
       addressInputRef.current.reportValidity();
+
       return;
     }
+
     getActualFee(address);
+
     handleOpenModal();
   };
 

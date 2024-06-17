@@ -5,13 +5,16 @@ import eth from "@/../public/assets/cryptocurrency-color_eth.png";
 import more from "@/../public/assets/arrow-down.png";
 import errorIcon from "@/../public/assets/icons8-error-48.png";
 import { ActualFeesContext } from "@/context/ActualFeesContext";
+import axios from "axios";
 
 function Checking({ onClose }) {
   const { ActualFees, success, error, errorMessage } =
     useContext(ActualFeesContext);
 
   const { hash, actualFee } = ActualFees;
+
   const [usdRate, setUsdRate] = useState(null);
+
   const shortHash = hash ? `${hash.slice(0, 14)}....` : "";
 
   const voyagerScanUrl = hash ? `https://voyager.online/tx/${hash}` : "#";
@@ -19,14 +22,10 @@ function Checking({ onClose }) {
   useEffect(() => {
     const fetchEthToUsdRate = async () => {
       try {
-        const response = await fetch(
+        const response = await axios.get(
           "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
         );
-        if (!response.ok) {
-          throw new Error("Failed to fetch ETH to USD rate");
-        }
-        const data = await response.json();
-        const rate = data.ethereum.usd;
+        const rate = response.data.ethereum.usd;
         setUsdRate(rate);
       } catch (error) {
         console.error("Error fetching ETH to USD rate:", error);
@@ -35,11 +34,8 @@ function Checking({ onClose }) {
 
     fetchEthToUsdRate();
   }, []);
-  const feeInUsd = (parseFloat(actualFee) / 10 ** 18) * usdRate;
 
-  const actualFeeInEth = actualFee
-    ? (parseInt(actualFee) / 10 ** 18).toFixed(5)
-    : "";
+  const feeInUsd = (parseFloat(actualFee) / 10 ** 18) * usdRate;
 
   return (
     <div className="md:w-[500px] w-[256px] md:h-[230.77px] h-[150px]  flex flex-col dark:text-[#0C0D4F] gap-4 justify-center items-center relative">
