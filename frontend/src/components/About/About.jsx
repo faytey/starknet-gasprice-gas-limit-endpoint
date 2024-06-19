@@ -8,6 +8,7 @@ function About() {
       <section className="xl:w-[1192px] h-[124px] dark:text-white flex justify-start p-10 items-center rounded-[10px] bg-gradient-to-r from-[#DDE5F9] to-[#FDD4D4] dark:bg-gradient-to-r dark:from-[#5E87EF] dark:to-[#F77D7D] relative">
         <Image
           src={background}
+          layout="fill"
           alt="background"
           className="absolute xl:w-[1192px] h-[124px] rounded-[10px]"
         />
